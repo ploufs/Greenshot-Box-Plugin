@@ -149,6 +149,7 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="SendToGreenShot.bat" />
     <None Include="Service References\BoxNet\GreenshotBoxPlugin.BoxNet.SOAPCollaboration.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

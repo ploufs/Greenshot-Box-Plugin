@@ -1,0 +1,1116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:boxnet" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns="http://schemas.xmlsoap.org/wsdl/" name="boxnet" targetNamespace="urn:boxnet" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types xmlns="http://schemas.xmlsoap.org/wsdl/">
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:boxnet">
+      <xsd:complexType name="SOAPUser">
+        <xsd:all>
+          <xsd:element name="login" type="xsd:string" />
+          <xsd:element name="email" type="xsd:string" />
+          <xsd:element name="access_id" type="xsd:int" />
+          <xsd:element name="user_id" type="xsd:int" />
+          <xsd:element name="space_amount" type="xsd:long" />
+          <xsd:element name="space_used" type="xsd:long" />
+          <xsd:element name="max_upload_size" type="xsd:long" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="SOAPFolder">
+        <xsd:all>
+          <xsd:element name="folder_id" type="xsd:long" />
+          <xsd:element name="folder_name" type="xsd:string" />
+          <xsd:element name="folder_type_id" type="xsd:long" />
+          <xsd:element name="user_id" type="xsd:int" />
+          <xsd:element name="path" type="xsd:string" />
+          <xsd:element name="shared" type="xsd:int" />
+          <xsd:element name="public_name" type="xsd:string" />
+          <xsd:element name="password" type="xsd:string" />
+          <xsd:element name="parent_folder_id" type="xsd:long" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="SOAPFileInfo">
+        <xsd:all>
+          <xsd:element name="file_id" type="xsd:long" />
+          <xsd:element name="file_name" type="xsd:string" />
+          <xsd:element name="folder_id" type="xsd:long" />
+          <xsd:element name="shared" type="xsd:long" />
+          <xsd:element name="public_name" type="xsd:string" />
+          <xsd:element name="size" type="xsd:long" />
+          <xsd:element name="description" type="xsd:string" />
+          <xsd:element name="sha1" type="xsd:string" />
+          <xsd:element name="created" type="xsd:long" />
+          <xsd:element name="updated" type="xsd:long" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="SOAPSearchResultItem">
+        <xsd:all>
+          <xsd:element name="name" type="xsd:string" />
+          <xsd:element name="id" type="xsd:long" />
+          <xsd:element name="description" type="xsd:string" />
+          <xsd:element name="folder_path" type="xsd:string" />
+          <xsd:element name="thumbnail" type="xsd:string" />
+          <xsd:element name="parent_id" type="xsd:string" />
+          <xsd:element name="match_type" type="tns:SOAPSearchMatchType" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="SOAPSearchMatchType">
+        <xsd:all>
+          <xsd:element name="collaborator" type="xsd:string" />
+          <xsd:element name="name" type="xsd:string" />
+          <xsd:element name="description" type="xsd:string" />
+          <xsd:element name="search_text" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="SOAPComment">
+        <xsd:all>
+          <xsd:element name="comment_id" type="xsd:long" />
+          <xsd:element name="message" type="xsd:string" />
+          <xsd:element name="user_name" type="xsd:string" />
+          <xsd:element name="user_id" type="xsd:long" />
+          <xsd:element name="created" type="xsd:long" />
+          <xsd:element name="avatar_url" type="xsd:string" />
+          <xsd:element name="reply_comments" type="tns:ArrayOfComment" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfComment">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="SOAP-ENC:Array">
+            <xsd:attribute wsdl:arrayType="tns:SOAPComment[]" ref="SOAP-ENC:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="SOAPVersion">
+        <xsd:all>
+          <xsd:element name="version_id" type="xsd:long" />
+          <xsd:element name="author" type="xsd:string" />
+          <xsd:element name="updated" type="xsd:long" />
+          <xsd:element name="size" type="xsd:long" />
+          <xsd:element name="sha1" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfVersion">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="SOAP-ENC:Array">
+            <xsd:attribute wsdl:arrayType="tns:SOAPVersion[]" ref="SOAP-ENC:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="SOAPCollaboration">
+        <xsd:all>
+          <xsd:element name="id" type="xsd:long" />
+          <xsd:element name="item_role_name" type="xsd:string" />
+          <xsd:element name="status" type="xsd:string" />
+          <xsd:element name="item_type" type="xsd:string" />
+          <xsd:element name="item_id" type="xsd:long" />
+          <xsd:element name="item_name" type="xsd:string" />
+          <xsd:element name="item_user_id" type="xsd:long" />
+          <xsd:element name="item_user_name" type="xsd:string" />
+          <xsd:element name="user_id" type="xsd:long" />
+          <xsd:element name="name" type="xsd:string" />
+          <xsd:element name="email" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfCollaboration">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="SOAP-ENC:Array">
+            <xsd:attribute wsdl:arrayType="tns:SOAPCollaboration[]" ref="SOAP-ENC:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="SOAPEvent">
+        <xsd:all>
+          <xsd:element name="event" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfEvent">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="SOAP-ENC:Array">
+            <xsd:attribute wsdl:arrayType="tns:SOAPEvent[]" ref="SOAP-ENC:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="SOAPCollaborationLink">
+        <xsd:all>
+          <xsd:element name="role_name" type="xsd:string" />
+          <xsd:element name="url" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfCollaborationLink">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="SOAP-ENC:Array">
+            <xsd:attribute wsdl:arrayType="tns:SOAPCollaborationLink[]" ref="SOAP-ENC:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="SOAPItemRole">
+        <xsd:all>
+          <xsd:element name="name" type="xsd:string" />
+          <xsd:element name="item_permissions" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfItemRole">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="SOAP-ENC:Array">
+            <xsd:attribute wsdl:arrayType="tns:SOAPItemRole[]" ref="SOAP-ENC:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfString">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="SOAP-ENC:Array">
+            <xsd:attribute wsdl:arrayType="xsd:string[]" ref="SOAP-ENC:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="SOAPKeyValuePair">
+        <xsd:all>
+          <xsd:element name="key" type="xsd:anyType" />
+          <xsd:element name="value" type="xsd:anyType" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfKeyValuePair">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="SOAP-ENC:Array">
+            <xsd:attribute wsdl:arrayType="tns:SOAPKeyValuePair[]" ref="SOAP-ENC:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfLong">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="SOAP-ENC:Array">
+            <xsd:attribute wsdl:arrayType="xsd:long[]" ref="SOAP-ENC:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfServiceSetting">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="SOAP-ENC:Array">
+            <xsd:attribute wsdl:arrayType="tns:SOAPServiceSetting[]" ref="SOAP-ENC:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="SOAPServiceSetting">
+        <xsd:all>
+          <xsd:element name="name" type="xsd:string" />
+          <xsd:element name="value" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfSearchResultItem">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="SOAP-ENC:Array">
+            <xsd:attribute wsdl:arrayType="tns:SOAPSearchResultItem[]" ref="SOAP-ENC:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="get_account_infoRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="get_account_infoResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="user" type="tns:SOAPUser" />
+  </wsdl:message>
+  <wsdl:message name="logoutRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="logoutResponse">
+    <wsdl:part name="status" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="get_ticketRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="get_ticketResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="ticket" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="get_auth_tokenRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="ticket" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="get_auth_tokenResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="user" type="tns:SOAPUser" />
+  </wsdl:message>
+  <wsdl:message name="register_new_userRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="login" type="xsd:string" />
+    <wsdl:part name="password" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="register_new_userResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="user" type="tns:SOAPUser" />
+  </wsdl:message>
+  <wsdl:message name="get_account_treeRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="folder_id" type="xsd:long" />
+    <wsdl:part name="params" type="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="get_account_treeResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="tree" type="xsd:base64Binary" />
+  </wsdl:message>
+  <wsdl:message name="export_tagsRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="export_tagsResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="tag_xml" type="xsd:base64Binary" />
+  </wsdl:message>
+  <wsdl:message name="create_folderRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="parent_id" type="xsd:long" />
+    <wsdl:part name="name" type="xsd:string" />
+    <wsdl:part name="share" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="create_folderResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="folder" type="tns:SOAPFolder" />
+  </wsdl:message>
+  <wsdl:message name="copyRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+    <wsdl:part name="destination_id" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="copyResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="new_id" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="moveRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+    <wsdl:part name="destination_id" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="moveResponse">
+    <wsdl:part name="status" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="renameRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+    <wsdl:part name="new_name" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="renameResponse">
+    <wsdl:part name="status" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="deleteRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="deleteResponse">
+    <wsdl:part name="status" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="public_shareRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+    <wsdl:part name="password" type="xsd:string" />
+    <wsdl:part name="message" type="xsd:string" />
+    <wsdl:part name="emails" type="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="public_shareResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="public_name" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="public_unshareRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="public_unshareResponse">
+    <wsdl:part name="status" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="private_shareRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+    <wsdl:part name="emails" type="tns:ArrayOfString" />
+    <wsdl:part name="message" type="xsd:string" />
+    <wsdl:part name="notify" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:message name="private_shareResponse">
+    <wsdl:part name="status" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="add_to_myboxRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="file_id" type="xsd:long" />
+    <wsdl:part name="public_name" type="xsd:string" />
+    <wsdl:part name="folder_id" type="xsd:long" />
+    <wsdl:part name="tags" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="add_to_myboxResponse">
+    <wsdl:part name="status" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="add_to_tagRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="tags" type="tns:ArrayOfString" />
+    <wsdl:part name="target" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="add_to_tagResponse">
+    <wsdl:part name="status" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="verify_registration_emailRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="login" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="verify_registration_emailResponse">
+    <wsdl:part name="status" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="get_file_infoRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="file_id" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="get_file_infoResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="info" type="tns:SOAPFileInfo" />
+  </wsdl:message>
+  <wsdl:message name="set_descriptionRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+    <wsdl:part name="description" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="set_descriptionResponse">
+    <wsdl:part name="status" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="get_friendsRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="params" type="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="get_friendsResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="friends" type="xsd:base64Binary" />
+  </wsdl:message>
+  <wsdl:message name="request_friendsRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="emails" type="tns:ArrayOfString" />
+    <wsdl:part name="message" type="xsd:string" />
+    <wsdl:part name="params" type="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="request_friendsResponse">
+    <wsdl:part name="status" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="make_updateRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="folder_id" type="xsd:long" />
+    <wsdl:part name="file_ids" type="tns:ArrayOfString" />
+    <wsdl:part name="update_type" type="xsd:string" />
+    <wsdl:part name="params" type="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="make_updateResponse">
+    <wsdl:part name="status" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="get_updatesRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="begin_timestamp" type="xsd:long" />
+    <wsdl:part name="end_timestamp" type="xsd:long" />
+    <wsdl:part name="params" type="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="get_updatesResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="updates" type="xsd:base64Binary" />
+  </wsdl:message>
+  <wsdl:message name="get_versionsRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="get_versionsResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="versions" type="tns:ArrayOfVersion" />
+  </wsdl:message>
+  <wsdl:message name="make_current_versionRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="version_id" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="make_current_versionResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="versions" type="tns:ArrayOfVersion" />
+  </wsdl:message>
+  <wsdl:message name="get_collaborationsRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="get_collaborationsResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="collaborations" type="tns:ArrayOfCollaboration" />
+  </wsdl:message>
+  <wsdl:message name="invite_collaboratorsRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+    <wsdl:part name="user_ids" type="tns:ArrayOfString" />
+    <wsdl:part name="emails" type="tns:ArrayOfString" />
+    <wsdl:part name="item_role_name" type="xsd:string" />
+    <wsdl:part name="resend_invite" type="xsd:boolean" />
+    <wsdl:part name="no_email" type="xsd:boolean" />
+    <wsdl:part name="params" type="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="invite_collaboratorsResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="invited_collaborators" type="tns:ArrayOfString" />
+    <wsdl:part name="unsuccessful_invitations" type="tns:ArrayOfString" />
+    <wsdl:part name="collaborations" type="tns:ArrayOfCollaboration" />
+  </wsdl:message>
+  <wsdl:message name="accept_collaborationRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="collaboration_id" type="xsd:long" />
+    <wsdl:part name="accept" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:message name="accept_collaborationResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="collaborations" type="tns:ArrayOfCollaboration" />
+  </wsdl:message>
+  <wsdl:message name="remove_collaborationRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="collaboration_id" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="remove_collaborationResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="collaborations" type="tns:ArrayOfCollaboration" />
+  </wsdl:message>
+  <wsdl:message name="get_collaboration_linkRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="get_collaboration_linkResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="collaboration_links" type="tns:SOAPCollaborationLink" />
+  </wsdl:message>
+  <wsdl:message name="toggle_collaboration_linkRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+    <wsdl:part name="enable" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:message name="toggle_collaboration_linkResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="collaboration_links" type="tns:SOAPCollaborationLink" />
+  </wsdl:message>
+  <wsdl:message name="get_item_roles_for_itemRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="get_item_roles_for_itemResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="item_roles" type="tns:ArrayOfItemRole" />
+  </wsdl:message>
+  <wsdl:message name="collaboration_change_item_roleRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="collaboration_id" type="xsd:long" />
+    <wsdl:part name="item_role_name" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="collaboration_change_item_roleResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="collaborations" type="tns:ArrayOfCollaboration" />
+  </wsdl:message>
+  <wsdl:message name="get_commentsRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+    <wsdl:part name="target" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="get_commentsResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="comments" type="tns:ArrayOfComment" />
+  </wsdl:message>
+  <wsdl:message name="add_commentRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+    <wsdl:part name="target" type="xsd:string" />
+    <wsdl:part name="message" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="add_commentResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="comment" type="tns:SOAPComment" />
+  </wsdl:message>
+  <wsdl:message name="delete_commentRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="target_id" type="xsd:long" />
+  </wsdl:message>
+  <wsdl:message name="delete_commentResponse">
+    <wsdl:part name="status" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="searchRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="query" type="xsd:string" />
+    <wsdl:part name="page" type="xsd:int" />
+    <wsdl:part name="per_page" type="xsd:int" />
+    <wsdl:part name="sort" type="xsd:string" />
+    <wsdl:part name="direction" type="xsd:string" />
+    <wsdl:part name="params" type="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="searchResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="files" type="tns:ArrayOfSearchResultItem" />
+    <wsdl:part name="folders" type="tns:ArrayOfSearchResultItem" />
+  </wsdl:message>
+  <wsdl:message name="toggle_folder_emailRequest">
+    <wsdl:part name="api_key" type="xsd:string" />
+    <wsdl:part name="auth_token" type="xsd:string" />
+    <wsdl:part name="folder_id" type="xsd:long" />
+    <wsdl:part name="enable" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:message name="toggle_folder_emailResponse">
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="upload_email" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:portType name="boxnetPort">
+    <wsdl:operation name="get_account_info">
+      <wsdl:input message="tns:get_account_infoRequest" />
+      <wsdl:output message="tns:get_account_infoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="logout">
+      <wsdl:input message="tns:logoutRequest" />
+      <wsdl:output message="tns:logoutResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="get_ticket">
+      <wsdl:input message="tns:get_ticketRequest" />
+      <wsdl:output message="tns:get_ticketResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="get_auth_token">
+      <wsdl:input message="tns:get_auth_tokenRequest" />
+      <wsdl:output message="tns:get_auth_tokenResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="register_new_user">
+      <wsdl:input message="tns:register_new_userRequest" />
+      <wsdl:output message="tns:register_new_userResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="get_account_tree">
+      <wsdl:input message="tns:get_account_treeRequest" />
+      <wsdl:output message="tns:get_account_treeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="export_tags">
+      <wsdl:input message="tns:export_tagsRequest" />
+      <wsdl:output message="tns:export_tagsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="create_folder">
+      <wsdl:input message="tns:create_folderRequest" />
+      <wsdl:output message="tns:create_folderResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="copy">
+      <wsdl:input message="tns:copyRequest" />
+      <wsdl:output message="tns:copyResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="move">
+      <wsdl:input message="tns:moveRequest" />
+      <wsdl:output message="tns:moveResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="rename">
+      <wsdl:input message="tns:renameRequest" />
+      <wsdl:output message="tns:renameResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdl:input message="tns:deleteRequest" />
+      <wsdl:output message="tns:deleteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="public_share">
+      <wsdl:input message="tns:public_shareRequest" />
+      <wsdl:output message="tns:public_shareResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="public_unshare">
+      <wsdl:input message="tns:public_unshareRequest" />
+      <wsdl:output message="tns:public_unshareResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="private_share">
+      <wsdl:input message="tns:private_shareRequest" />
+      <wsdl:output message="tns:private_shareResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="add_to_mybox">
+      <wsdl:input message="tns:add_to_myboxRequest" />
+      <wsdl:output message="tns:add_to_myboxResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="add_to_tag">
+      <wsdl:input message="tns:add_to_tagRequest" />
+      <wsdl:output message="tns:add_to_tagResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="verify_registration_email">
+      <wsdl:input message="tns:verify_registration_emailRequest" />
+      <wsdl:output message="tns:verify_registration_emailResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="get_file_info">
+      <wsdl:input message="tns:get_file_infoRequest" />
+      <wsdl:output message="tns:get_file_infoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="set_description">
+      <wsdl:input message="tns:set_descriptionRequest" />
+      <wsdl:output message="tns:set_descriptionResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="get_friends">
+      <wsdl:input message="tns:get_friendsRequest" />
+      <wsdl:output message="tns:get_friendsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="request_friends">
+      <wsdl:input message="tns:request_friendsRequest" />
+      <wsdl:output message="tns:request_friendsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="make_update">
+      <wsdl:input message="tns:make_updateRequest" />
+      <wsdl:output message="tns:make_updateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="get_updates">
+      <wsdl:input message="tns:get_updatesRequest" />
+      <wsdl:output message="tns:get_updatesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="get_versions">
+      <wsdl:input message="tns:get_versionsRequest" />
+      <wsdl:output message="tns:get_versionsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="make_current_version">
+      <wsdl:input message="tns:make_current_versionRequest" />
+      <wsdl:output message="tns:make_current_versionResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="get_collaborations">
+      <wsdl:input message="tns:get_collaborationsRequest" />
+      <wsdl:output message="tns:get_collaborationsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="invite_collaborators">
+      <wsdl:input message="tns:invite_collaboratorsRequest" />
+      <wsdl:output message="tns:invite_collaboratorsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="accept_collaboration">
+      <wsdl:input message="tns:accept_collaborationRequest" />
+      <wsdl:output message="tns:accept_collaborationResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="remove_collaboration">
+      <wsdl:input message="tns:remove_collaborationRequest" />
+      <wsdl:output message="tns:remove_collaborationResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="get_collaboration_link">
+      <wsdl:input message="tns:get_collaboration_linkRequest" />
+      <wsdl:output message="tns:get_collaboration_linkResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="toggle_collaboration_link">
+      <wsdl:input message="tns:toggle_collaboration_linkRequest" />
+      <wsdl:output message="tns:toggle_collaboration_linkResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="get_item_roles_for_item">
+      <wsdl:input message="tns:get_item_roles_for_itemRequest" />
+      <wsdl:output message="tns:get_item_roles_for_itemResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="collaboration_change_item_role">
+      <wsdl:input message="tns:collaboration_change_item_roleRequest" />
+      <wsdl:output message="tns:collaboration_change_item_roleResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="get_comments">
+      <wsdl:input message="tns:get_commentsRequest" />
+      <wsdl:output message="tns:get_commentsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="add_comment">
+      <wsdl:input message="tns:add_commentRequest" />
+      <wsdl:output message="tns:add_commentResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="delete_comment">
+      <wsdl:input message="tns:delete_commentRequest" />
+      <wsdl:output message="tns:delete_commentResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <wsdl:input message="tns:searchRequest" />
+      <wsdl:output message="tns:searchResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="toggle_folder_email">
+      <wsdl:input message="tns:toggle_folder_emailRequest" />
+      <wsdl:output message="tns:toggle_folder_emailResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="boxnetBinding" type="tns:boxnetPort">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="get_account_info">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#get_account_info" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="logout">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#logout" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_ticket">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#get_ticket" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_auth_token">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#get_auth_token" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="register_new_user">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#register_new_user" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_account_tree">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#get_account_tree" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="export_tags">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#export_tags" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="create_folder">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#create_folder" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="copy">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#copy" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="move">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#move" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="rename">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#rename" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#delete" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="public_share">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#public_share" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="public_unshare">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#public_unshare" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="private_share">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#private_share" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="add_to_mybox">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#add_to_mybox" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="add_to_tag">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#add_to_tag" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="verify_registration_email">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#verify_registration_email" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_file_info">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#get_file_info" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="set_description">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#set_description" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_friends">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#get_friends" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="request_friends">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#request_friends" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="make_update">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#make_update" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_updates">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#get_updates" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_versions">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#get_versions" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="make_current_version">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#make_current_version" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_collaborations">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#get_collaborations" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="invite_collaborators">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#invite_collaborators" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="accept_collaboration">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#accept_collaboration" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="remove_collaboration">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#remove_collaboration" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_collaboration_link">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#get_collaboration_link" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="toggle_collaboration_link">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#toggle_collaboration_link" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_item_roles_for_item">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#get_item_roles_for_item" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="collaboration_change_item_role">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#collaboration_change_item_role" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_comments">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#get_comments" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="add_comment">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#add_comment" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="delete_comment">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#delete_comment" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#search" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="toggle_folder_email">
+      <soap:operation soapAction="urn:boxnet#Box_SoapApi#toggle_folder_email" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:boxnet" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="boxnetService">
+    <documentation />
+    <wsdl:port name="boxnetPort" binding="tns:boxnetBinding">
+      <soap:address location="http://box.net/api/1.0/soap" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

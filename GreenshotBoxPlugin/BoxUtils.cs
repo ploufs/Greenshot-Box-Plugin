@@ -1,6 +1,6 @@
 ﻿/*
  * Greenshot - a free and open source screenshot tool
- * Copyright (C) 2011  Francis Noel
+ * Copyright (C) 2011-2012  Francis Noel
  * 
  * For more information see: http://getgreenshot.org/
  * The Greenshot project is hosted on Sourceforge: http://sourceforge.net/projects/greenshot/
@@ -20,17 +20,17 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using GreenshotPlugin.Core;
-using System.Text;
-using System.Xml.Linq;
-using System.Collections.Specialized;
 using System.Xml;
+using System.Xml.Linq;
+using GreenshotPlugin.Core;
+using IniFile;
 
 namespace GreenshotBoxPlugin {
 	/// <summary>

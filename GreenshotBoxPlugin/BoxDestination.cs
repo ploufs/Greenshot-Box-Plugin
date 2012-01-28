@@ -42,7 +42,7 @@ namespace GreenshotBoxPlugin
 			using (Image image = surface.GetImageForExport()) {
 				bool uploaded = plugin.Upload(captureDetails, image);
 				if (uploaded) {
-					surface.SendMessageEvent(this, SurfaceMessageTyp.Info, "Exported to Picasa");
+					surface.SendMessageEvent(this, SurfaceMessageTyp.Info, "Exported to Box");
 					surface.Modified = false;
 				}
 				return uploaded;
